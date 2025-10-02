@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Safety Report - Aviation Safety Reports</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <strong>Aviation Safety Reports</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about/">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/create/">Create Report</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mt-4 flex-grow-1">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="text-primary">Create Safety Report</h2>
+                    <a href="/about/" class="btn btn-outline-primary">← Back</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Report a Safety Incident or Occurance</h5>
+                        <small class="text-muted">All fields are required.</small>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            <div class="mb-3">
+                                <label for="place" class="form-label">
+                                    <strong>Location</strong>
+                                </label>
+                                <input type="text" class="form-control" id="place" name="place" required>
+                                <div class="form-text">Specify the airport, airspace, or location where the incident occurred.</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="date" class="form-label">
+                                            <strong>Date</strong>
+                                        </label>
+                                        <input type="date" class="form-control" id="date" name="date" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="time" class="form-label">
+                                            <strong>Time</strong>
+                                        </label>
+                                        <input type="time" class="form-control" id="time" name="time" required>
+                                        <div class="form-text">Local time (24-hour format)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="description" class="form-label">
+                                    <strong>Description</strong>
+                                </label>
+                                <div class="form-text mb-2">
+                                    Provide a detailed description of what happened. Please include:
+                                    <ul class="small mt-1 mb-0">
+                                        <li>What occurred and when</li>
+                                        <li>Contributing factors</li>
+                                        <li>Actions taken</li>
+                                        <li>Safety recommendations</li>
+                                    </ul>
+                                </div>
+                                <textarea class="form-control" id="description" name="description" rows="8" required></textarea>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="/about/" class="btn btn-outline-secondary me-md-2">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Submit Safety Report</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Safety Notice -->
+                <div class="alert alert-info mt-4">
+                    <h6>Confidentiality Notice</h6>
+                    <p class="mb-0 small">
+                        Your safety report is confidential and will be used only for safety improvement purposes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <div class="container">
+            <span>&copy; Code Institute - Project 04 - Guilherme Brito</span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

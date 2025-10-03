@@ -44,36 +44,47 @@
                     </div>
                     <div class="card-body">
                         <form method="post">
+                            {% csrf_token %}
+
                             <div class="mb-3">
-                                <label for="place" class="form-label">
+                                <label for="{{ form.place.id_for_label }}" class="form-label">
                                     <strong>Location</strong>
                                 </label>
-                                <input type="text" class="form-control" id="place" name="place" required>
+                                {{ form.place }}
                                 <div class="form-text">Specify the airport, airspace, or location where the incident occurred.</div>
+                                {% if form.place.errors %}
+                                    <div class="text-danger">{{ form.place.errors }}</div>
+                                {% endif %}
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="date" class="form-label">
+                                        <label for="{{ form.date.id_for_label }}" class="form-label">
                                             <strong>Date</strong>
                                         </label>
-                                        <input type="date" class="form-control" id="date" name="date" required>
+                                        {{ form.date }}
+                                        {% if form.date.errors %}
+                                            <div class="text-danger">{{ form.date.errors }}</div>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="time" class="form-label">
+                                        <label for="{{ form.time.id_for_label }}" class="form-label">
                                             <strong>Time</strong>
                                         </label>
-                                        <input type="time" class="form-control" id="time" name="time" required>
+                                        {{ form.time }}
                                         <div class="form-text">Local time (24-hour format)</div>
+                                        {% if form.time.errors %}
+                                            <div class="text-danger">{{ form.time.errors }}</div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
 
                             <div class="mb-4">
-                                <label for="description" class="form-label">
+                                <label for="{{ form.description.id_for_label }}" class="form-label">
                                     <strong>Description</strong>
                                 </label>
                                 <div class="form-text mb-2">
@@ -85,7 +96,10 @@
                                         <li>Safety recommendations</li>
                                     </ul>
                                 </div>
-                                <textarea class="form-control" id="description" name="description" rows="8" required></textarea>
+                                {{ form.description }}
+                                {% if form.description.errors %}
+                                    <div class="text-danger">{{ form.description.errors }}</div>
+                                {% endif %}
                             </div>
 
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">

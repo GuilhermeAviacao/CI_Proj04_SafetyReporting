@@ -64,22 +64,24 @@
                 <div class="row">
                     {% for report in page_obj %}
                     <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card h-100 report-summary">
-                            <div class="card-header">
-                                <h6 class="card-title mb-0 text-primary">{{ report.place }}</h6>
-                                <small class="text-muted">{{ report.date }} at {{ report.time }}</small>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">
-                                    {{ report.description|truncatewords:20 }}
-                                </p>
-                                <div class="mt-auto">
-                                    <small class="text-muted">
-                                        By {{ report.author.username }} - {{ report.created_at|date:"M d, Y" }}
-                                    </small>
+                        <a href="/report/{{ report.pk }}/" class="text-decoration-none">
+                            <div class="card h-100 report-summary">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0 text-primary">{{ report.place }}</h6>
+                                    <small class="text-muted">{{ report.date }} at {{ report.time }}</small>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text text-dark">
+                                        {{ report.description|truncatewords:20 }}
+                                    </p>
+                                    <div class="mt-auto">
+                                        <small class="text-muted">
+                                            By {{ report.author.username }} - {{ report.created_at|date:"M d, Y" }}
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                     {% empty %}
                     <div class="col-12">

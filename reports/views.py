@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -30,6 +30,14 @@ def board(request):
         'search_query': search_query,
     }
     return render(request, 'reports/board.html', context)
+
+
+def report_detail(request, pk):
+    report = get_object_or_404(SafetyReport, pk=pk)
+    context = {
+        'report': report,
+    }
+    return render(request, 'reports/report_detail.html', context)
 
 
 def create_report(request):

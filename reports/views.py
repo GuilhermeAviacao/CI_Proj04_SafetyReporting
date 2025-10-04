@@ -40,26 +40,29 @@ def report_detail(request, pk):
     return render(request, 'reports/report_detail.html', context)
 
 
+@login_required
 def create_report(request):
-    # Temporary: Allow anonymous users until authentication is set up
+    # Check if user just registered (has no reports yet)
+    is_new_user = not request.user.safety_reports.exists()
+
     if request.method == 'POST':
         form = SafetyReportForm(request.POST)
         if form.is_valid():
             report = form.save(commit=False)
-            # Use first user or create a default user for testing
-            from django.contrib.auth.models import User
-            if request.user.is_authenticated:
-                report.author = request.user
-            else:
-                # Get or create a default user for anonymous submissions
-                report.author, _ = User.objects.get_or_create(
-                    username='anonymous',
-                    defaults={'email': 'anonymous@example.com'}
-                )
+            report.author = request.user
             report.save()
-            messages.success(request, 'Safety report created successfully!')
-            return redirect('board')
+            if is_new_user:
+                messages.success(request, 'Your first report was been created!')
+            else:
+                messages.success(request, 'Safety report created successfully!')
+            return redirect('report_detail', pk=report.pk)
     else:
         form = SafetyReportForm()
+        if is_new_user:
+            messages.info(request, 'Welcome aboard! Your registration was successful.')
 
-    return render(request, 'reports/create_report.html', {'form': form})
+    context = {
+        'form': form,
+        'is_new_user': is_new_user,
+    }
+    return render(request, 'reports/create_report.html', context)

@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 from .forms import SafetyReportForm
 from .models import SafetyReport
 
@@ -66,3 +68,36 @@ def create_report(request):
         'is_new_user': is_new_user,
     }
     return render(request, 'reports/create_report.html', context)
+
+
+@login_required
+@require_POST
+def update_investigation_status(request, pk):
+    # Check if user is an investigator
+    profile = getattr(request.user, 'profile', None)
+    if not profile or not profile.is_investigator():
+        return JsonResponse({'error': 'Permission denied'}, status=403)
+
+    try:
+        report = get_object_or_404(SafetyReport, pk=pk)
+        new_status = request.POST.get('status')
+
+        # Validate status choice
+        valid_statuses = [choice[0] for choice in SafetyReport.INVESTIGATION_STATUS_CHOICES]
+        if new_status not in valid_statuses:
+            return JsonResponse({'error': 'Invalid status'}, status=400)
+
+        old_status = report.get_investigation_status_display()
+        report.investigation_status = new_status
+        report.save()
+
+        return JsonResponse({
+            'success': True,
+            'message': f'Status updated from "{old_status}" to "{report.get_investigation_status_display()}"',
+            'new_status': report.get_investigation_status_display(),
+            'status_color': report.get_status_color(),
+            'status_icon': report.get_status_icon()
+        })
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

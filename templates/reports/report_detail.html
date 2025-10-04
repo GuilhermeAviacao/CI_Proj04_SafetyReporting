@@ -67,9 +67,33 @@
                                 <p class="mb-0 text-muted">Report #{{ report.pk }}</p>
                             </div>
                             <div class="col-auto text-end">
-                                <span class="badge bg-secondary fs-6 px-3 py-2">
+                                {% if user.is_authenticated and user.profile.is_investigator %}
+                                <div class="dropdown">
+                                    <button class="btn btn-{{ report.get_status_color }} dropdown-toggle fs-6 px-3 py-2" type="button" id="statusDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="{{ report.get_status_icon }} me-1"></i>
+                                        {{ report.get_investigation_status_display }}
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="statusDropdown">
+                                        <li><a class="dropdown-item" href="#" data-status="waiting">
+                                            <i class="fas fa-clock me-1"></i> Waiting investigation
+                                        </a></li>
+                                        <li><a class="dropdown-item" href="#" data-status="investigating">
+                                            <i class="fas fa-search me-1"></i> Under investigation
+                                        </a></li>
+                                        <li><a class="dropdown-item" href="#" data-status="closed">
+                                            <i class="fas fa-check-circle me-1"></i> Investigation closed
+                                        </a></li>
+                                        <li><a class="dropdown-item" href="#" data-status="dismissed">
+                                            <i class="fas fa-times-circle me-1"></i> Dismissed
+                                        </a></li>
+                                    </ul>
+                                </div>
+                                {% else %}
+                                <span class="badge bg-{{ report.get_status_color }} fs-6 px-3 py-2">
+                                    <i class="{{ report.get_status_icon }} me-1"></i>
                                     {{ report.get_investigation_status_display }}
                                 </span>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -123,5 +147,72 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% if user.is_authenticated and user.profile.is_investigator %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusDropdownItems = document.querySelectorAll('[data-status]');
+            const statusButton = document.getElementById('statusDropdown');
+
+            statusDropdownItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const newStatus = this.getAttribute('data-status');
+
+                    // Get CSRF token
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value ||
+                                     getCookie('csrftoken');
+
+                    // Send AJAX request to update status
+                    fetch('/report/{{ report.pk }}/update-status/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRFToken': csrfToken
+                        },
+                        body: 'status=' + newStatus
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Update button text and color
+                            const statusMap = {
+                                'waiting': { text: 'Waiting investigation', color: 'primary', icon: 'fas fa-clock' },
+                                'investigating': { text: 'Under investigation', color: 'warning', icon: 'fas fa-search' },
+                                'closed': { text: 'Investigation closed', color: 'secondary', icon: 'fas fa-check-circle' },
+                                'dismissed': { text: 'Dismissed', color: 'dark', icon: 'fas fa-times-circle' }
+                            };
+
+                            const status = statusMap[newStatus];
+                            statusButton.className = 'btn btn-' + status.color + ' dropdown-toggle fs-6 px-3 py-2';
+                            statusButton.innerHTML = '<i class="' + status.icon + ' me-1"></i> ' + status.text;
+                        } else {
+                            alert('Error: ' + (data.error || 'Failed to update status'));
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while updating the status');
+                    });
+                });
+            });
+
+            // Helper function to get CSRF token from cookie
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        });
+    </script>
+    {% endif %}
 </body>
 </html>

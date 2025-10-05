@@ -1,5 +1,5 @@
 from django import forms
-from .models import SafetyReport
+from .models import SafetyReport, Comment
 
 
 class SafetyReportForm(forms.ModelForm):
@@ -30,3 +30,21 @@ class SafetyReportForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.required = True
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 1,
+                'placeholder': 'Share your thoughts, insights, or questions about this safety report...'
+            })
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['content'].label = "Add Comment"
+        self.fields['content'].required = True

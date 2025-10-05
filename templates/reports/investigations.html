@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investigation Status - Aviation Safety Reports</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/about/">
+                <strong>Aviation Safety Reports</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about/">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/board/">Board</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/investigations/">Investigations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/create/">Create Report</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ user.email }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_signup' %}">Register</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mt-4 flex-grow-1">
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-4">
+                    <h2 class="text-primary mb-3">Investigation Status Overview</h2>
+
+                    <!-- Investigation Summary -->
+                    <div class="alert alert-info text-center mb-4">
+                        <h6>Investigation Summary</h6>
+                        <p class="mb-0">
+                            <strong id="total-reports">{{ total_reports }}</strong> total safety reports submitted.
+                            Progress overview of investigations started by the reports submissions.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="card border-primary">
+                            <div class="card-body text-center">
+                                <i class="fas fa-clock fa-2x text-primary mb-2"></i>
+                                <h5 class="card-title text-primary" id="waiting-count">{{ status_data.waiting }}</h5>
+                                <p class="card-text">Waiting Investigation</p>
+                                <small class="text-muted" id="waiting-percent">{{ status_percentages.waiting }}% of total</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="card border-warning">
+                            <div class="card-body text-center">
+                                <i class="fas fa-search fa-2x text-warning mb-2"></i>
+                                <h5 class="card-title text-warning" id="investigating-count">{{ status_data.investigating }}</h5>
+                                <p class="card-text">Under Investigation</p>
+                                <small class="text-muted" id="investigating-percent">{{ status_percentages.investigating }}% of total</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="card border-secondary">
+                            <div class="card-body text-center">
+                                <i class="fas fa-check-circle fa-2x text-secondary mb-2"></i>
+                                <h5 class="card-title text-secondary" id="closed-count">{{ status_data.closed }}</h5>
+                                <p class="card-text">Investigation Closed</p>
+                                <small class="text-muted" id="closed-percent">{{ status_percentages.closed }}% of total</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="card border-dark">
+                            <div class="card-body text-center">
+                                <i class="fas fa-times-circle fa-2x text-dark mb-2"></i>
+                                <h5 class="card-title text-dark" id="dismissed-count">{{ status_data.dismissed }}</h5>
+                                <p class="card-text">Dismissed</p>
+                                <small class="text-muted" id="dismissed-percent">{{ status_percentages.dismissed }}% of total</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Charts Section -->
+                <div class="row mb-4">
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5 class="mb-0 text-primary">Status Distribution</h5>
+                            </div>
+                            <div class="card-body d-flex align-items-center justify-content-center" style="height: 400px;">
+                                <canvas id="statusChart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5 class="mb-0 text-primary">Status Progress</h5>
+                            </div>
+                            <div class="card-body" style="height: 400px; overflow-y: auto;">
+                                <div class="mb-4">
+                                    <label class="form-label">Waiting Investigation</label>
+                                    <div class="progress" style="height: 35px;">
+                                        <div class="progress-bar bg-primary d-flex align-items-center justify-content-center" id="waiting-progress" style="width: {{ status_percentages.waiting }}%; font-size: 1.1rem; font-weight: bold;">
+                                            {{ status_percentages.waiting }}%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Under Investigation</label>
+                                    <div class="progress" style="height: 35px;">
+                                        <div class="progress-bar bg-warning d-flex align-items-center justify-content-center" id="investigating-progress" style="width: {{ status_percentages.investigating }}%; font-size: 1.1rem; font-weight: bold;">
+                                            {{ status_percentages.investigating }}%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Investigation Closed</label>
+                                    <div class="progress" style="height: 35px;">
+                                        <div class="progress-bar bg-secondary d-flex align-items-center justify-content-center" id="closed-progress" style="width: {{ status_percentages.closed }}%; font-size: 1.1rem; font-weight: bold;">
+                                            {{ status_percentages.closed }}%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Dismissed</label>
+                                    <div class="progress" style="height: 35px;">
+                                        <div class="progress-bar bg-dark d-flex align-items-center justify-content-center" id="dismissed-progress" style="width: {{ status_percentages.dismissed }}%; font-size: 1.1rem; font-weight: bold;">
+                                            {{ status_percentages.dismissed }}%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <div class="container">
+            <span>&copy; Code Institute - Project 04 - Guilherme Brito</span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Doughnut Chart for Status Distribution
+        const ctx = document.getElementById('statusChart').getContext('2d');
+        const statusChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Waiting Investigation', 'Under Investigation', 'Investigation Closed', 'Dismissed'],
+                datasets: [{
+                    data: [
+                        {{ status_data.waiting }},
+                        {{ status_data.investigating }},
+                        {{ status_data.closed }},
+                        {{ status_data.dismissed }}
+                    ],
+                    backgroundColor: [
+                        '#2E86AB',
+                        '#FFC107',
+                        '#6C757D',
+                        '#212529'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                aspectRatio: 1,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true
+                        }
+                    }
+                }
+            }
+        });
+
+        // Store reference to the chart for updates
+        let statusChartInstance = statusChart;
+
+        // Function to refresh investigation data
+        function refreshInvestigationData() {
+            fetch('/investigations/data/')
+                .then(response => response.json())
+                .then(data => {
+                    // Update summary cards
+                    updateSummaryCards(data);
+
+                    // Update chart
+                    updateChart(data);
+
+                    // Update progress bars
+                    updateProgressBars(data);
+                })
+                .catch(error => {
+                    console.error('Error refreshing data:', error);
+                });
+        }
+
+        // Update summary cards
+        function updateSummaryCards(data) {
+            document.getElementById('waiting-count').textContent = data.status_data.waiting;
+            document.getElementById('waiting-percent').textContent = data.status_percentages.waiting + '% of total';
+
+            document.getElementById('investigating-count').textContent = data.status_data.investigating;
+            document.getElementById('investigating-percent').textContent = data.status_percentages.investigating + '% of total';
+
+            document.getElementById('closed-count').textContent = data.status_data.closed;
+            document.getElementById('closed-percent').textContent = data.status_percentages.closed + '% of total';
+
+            document.getElementById('dismissed-count').textContent = data.status_data.dismissed;
+            document.getElementById('dismissed-percent').textContent = data.status_percentages.dismissed + '% of total';
+
+            // Update total reports in summary
+            document.getElementById('total-reports').textContent = data.total_reports;
+        }
+
+        // Update chart
+        function updateChart(data) {
+            statusChartInstance.data.datasets[0].data = [
+                data.status_data.waiting,
+                data.status_data.investigating,
+                data.status_data.closed,
+                data.status_data.dismissed
+            ];
+            statusChartInstance.update();
+        }
+
+        // Update progress bars
+        function updateProgressBars(data) {
+            const waitingBar = document.getElementById('waiting-progress');
+            waitingBar.style.width = data.status_percentages.waiting + '%';
+            waitingBar.textContent = data.status_percentages.waiting + '%';
+
+            const investigatingBar = document.getElementById('investigating-progress');
+            investigatingBar.style.width = data.status_percentages.investigating + '%';
+            investigatingBar.textContent = data.status_percentages.investigating + '%';
+
+            const closedBar = document.getElementById('closed-progress');
+            closedBar.style.width = data.status_percentages.closed + '%';
+            closedBar.textContent = data.status_percentages.closed + '%';
+
+            const dismissedBar = document.getElementById('dismissed-progress');
+            dismissedBar.style.width = data.status_percentages.dismissed + '%';
+            dismissedBar.textContent = data.status_percentages.dismissed + '%';
+        }
+
+        // Auto-refresh every 30 seconds
+        setInterval(refreshInvestigationData, 30000);
+    </script>
+</body>
+</html>

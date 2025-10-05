@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from .forms import SafetyReportForm, CommentForm
@@ -153,3 +153,69 @@ def delete_comment(request, pk):
         'comment': comment,
     }
     return render(request, 'reports/delete_comment.html', context)
+
+
+def investigations(request):
+    # Get status statistics
+    status_stats = SafetyReport.objects.values('investigation_status').annotate(
+        count=Count('investigation_status')
+    ).order_by('investigation_status')
+
+    # Prepare data for charts
+    status_data = {
+        'waiting': 0,
+        'investigating': 0,
+        'closed': 0,
+        'dismissed': 0,
+    }
+
+    total_reports = SafetyReport.objects.count()
+
+    for stat in status_stats:
+        status_data[stat['investigation_status']] = stat['count']
+
+    # Calculate percentages
+    status_percentages = {}
+    for status, count in status_data.items():
+        percentage = (count / total_reports * 100) if total_reports > 0 else 0
+        status_percentages[status] = round(percentage, 1)
+
+    context = {
+        'status_data': status_data,
+        'status_percentages': status_percentages,
+        'total_reports': total_reports,
+    }
+    return render(request, 'reports/investigations.html', context)
+
+
+def get_investigation_data(request):
+    """AJAX endpoint to fetch current investigation status data"""
+    # Get status statistics
+    status_stats = SafetyReport.objects.values('investigation_status').annotate(
+        count=Count('investigation_status')
+    ).order_by('investigation_status')
+
+    # Prepare data for charts
+    status_data = {
+        'waiting': 0,
+        'investigating': 0,
+        'closed': 0,
+        'dismissed': 0,
+    }
+
+    total_reports = SafetyReport.objects.count()
+
+    for stat in status_stats:
+        status_data[stat['investigation_status']] = stat['count']
+
+    # Calculate percentages
+    status_percentages = {}
+    for status, count in status_data.items():
+        percentage = (count / total_reports * 100) if total_reports > 0 else 0
+        status_percentages[status] = round(percentage, 1)
+
+    return JsonResponse({
+        'status_data': status_data,
+        'status_percentages': status_percentages,
+        'total_reports': total_reports,
+    })

@@ -5,8 +5,8 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from .forms import SafetyReportForm
-from .models import SafetyReport
+from .forms import SafetyReportForm, CommentForm
+from .models import SafetyReport, Comment
 
 
 def about(request):
@@ -36,8 +36,24 @@ def board(request):
 
 def report_detail(request, pk):
     report = get_object_or_404(SafetyReport, pk=pk)
+    comments = report.comments.all()
+
+    if request.method == 'POST' and request.user.is_authenticated:
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.report = report
+            comment.author = request.user
+            comment.save()
+            messages.success(request, 'Your comment has been added successfully!')
+            return redirect('report_detail', pk=pk)
+    else:
+        comment_form = CommentForm() if request.user.is_authenticated else None
+
     context = {
         'report': report,
+        'comments': comments,
+        'comment_form': comment_form,
     }
     return render(request, 'reports/report_detail.html', context)
 
@@ -101,3 +117,39 @@ def update_investigation_status(request, pk):
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+@login_required
+def edit_comment(request, pk):
+    comment = get_object_or_404(Comment, pk=pk, author=request.user)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your comment has been updated successfully!')
+            return redirect('report_detail', pk=comment.report.pk)
+    else:
+        form = CommentForm(instance=comment)
+
+    context = {
+        'form': form,
+        'comment': comment,
+    }
+    return render(request, 'reports/edit_comment.html', context)
+
+
+@login_required
+def delete_comment(request, pk):
+    comment = get_object_or_404(Comment, pk=pk, author=request.user)
+    report_pk = comment.report.pk
+
+    if request.method == 'POST':
+        comment.delete()
+        messages.success(request, 'Your comment has been deleted successfully!')
+        return redirect('report_detail', pk=report_pk)
+
+    context = {
+        'comment': comment,
+    }
+    return render(request, 'reports/delete_comment.html', context)

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import SafetyReport, UserProfile
+from .models import SafetyReport, Comment, UserProfile
 
 
 @admin.register(SafetyReport)
@@ -25,6 +25,19 @@ class SafetyReportAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['author', 'report', 'content_preview', 'created_at']
+    list_filter = ['created_at', 'author', 'report__date']
+    search_fields = ['content', 'author__email', 'report__place']
+    date_hierarchy = 'created_at'
+    readonly_fields = ['created_at', 'updated_at']
+
+    def content_preview(self, obj):
+        return obj.content[:50] + "..." if len(obj.content) > 50 else obj.content
+    content_preview.short_description = "Content Preview"
 
 
 # Inline admin for UserProfile

@@ -96,3 +96,17 @@ class SafetyReport(models.Model):
             'dismissed': 'fas fa-times-circle',
         }
         return status_icons.get(self.investigation_status, 'fas fa-clock')
+
+
+class Comment(models.Model):
+    report = models.ForeignKey(SafetyReport, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f"Comment by {self.author.email} on {self.report.place}"

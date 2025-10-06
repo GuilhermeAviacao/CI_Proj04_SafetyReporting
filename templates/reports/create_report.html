@@ -68,7 +68,7 @@
                         <small class="text-muted">All fields are required.</small>
                     </div>
                     <div class="card-body">
-                        <form method="post">
+                        <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
 
                             <div class="mb-3">
@@ -124,6 +124,17 @@
                                 {{ form.description }}
                                 {% if form.description.errors %}
                                     <div class="text-danger">{{ form.description.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="{{ form.image.id_for_label }}" class="form-label">
+                                    <strong>Attach Image (Optional)</strong>
+                                </label>
+                                {{ form.image }}
+                                <div class="form-text">Upload an image evidence to your safety report (optional).</div>
+                                {% if form.image.errors %}
+                                    <div class="text-danger">{{ form.image.errors }}</div>
                                 {% endif %}
                             </div>
 

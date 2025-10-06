@@ -5,7 +5,7 @@ from .models import SafetyReport, Comment
 class SafetyReportForm(forms.ModelForm):
     class Meta:
         model = SafetyReport
-        fields = ['place', 'date', 'time', 'description']
+        fields = ['place', 'date', 'time', 'description', 'image']
         widgets = {
             'place': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -23,13 +23,20 @@ class SafetyReportForm(forms.ModelForm):
                 'class': 'form-control',
                 'rows': 8,
                 'placeholder': 'Provide detailed description of the safety incident or observation...'
+            }),
+            'image': forms.FileInput(attrs={
+                'class': 'form-control',
+                'accept': 'image/*'
             })
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.required = True
+        for field_name, field in self.fields.items():
+            if field_name != 'image':
+                field.required = True
+            else:
+                field.required = False
 
 
 class CommentForm(forms.ModelForm):

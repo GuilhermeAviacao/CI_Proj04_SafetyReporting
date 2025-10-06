@@ -143,6 +143,22 @@
                                 <p class="mb-0" style="white-space: pre-wrap;">{{ report.description }}</p>
                             </div>
                         </div>
+
+                        {% if report.image %}
+                        <div class="mb-4">
+                            <strong>Attached Image:</strong>
+                            <div class="mt-2">
+                                <a href="{{ report.image.url }}" target="_blank" rel="noopener noreferrer">
+                                    <img src="{{ report.image.url }}" alt="Report attachment" class="img-fluid rounded" style="max-width: 100%; height: auto; max-height: 600px; object-fit: contain; cursor: pointer;">
+                                </a>
+                                <div class="mt-2">
+                                    <a href="{{ report.image.url }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-external-link-alt"></i> Open in new tab
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
 

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from cloudinary.models import CloudinaryField
 
 
 class UserProfile(models.Model):
@@ -59,6 +60,7 @@ class SafetyReport(models.Model):
     date = models.DateField()
     time = models.TimeField()
     description = models.TextField()
+    image = CloudinaryField('image', blank=True, null=True, help_text="Optional image attachment for the safety report")
     investigation_status = models.CharField(
         max_length=20,
         choices=INVESTIGATION_STATUS_CHOICES,

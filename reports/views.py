@@ -64,7 +64,7 @@ def create_report(request):
     is_new_user = not request.user.safety_reports.exists()
 
     if request.method == 'POST':
-        form = SafetyReportForm(request.POST)
+        form = SafetyReportForm(request.POST, request.FILES)
         if form.is_valid():
             report = form.save(commit=False)
             report.author = request.user

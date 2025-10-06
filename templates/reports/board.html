@@ -109,6 +109,12 @@
                                         </small>
                                     </div>
                                 </div>
+                                <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
+                                    <small class="text-primary">Click to read full report →</small>
+                                    <small class="text-primary">
+                                        <i class="fas fa-comments"></i> {{ report.comments.count }} comment{{ report.comments.count|pluralize }}
+                                    </small>
+                                </div>
                             </div>
                         </a>
                     </div>

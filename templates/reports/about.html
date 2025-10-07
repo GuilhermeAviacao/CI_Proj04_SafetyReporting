@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Aviation Safety Reports</title>
+    <title>About Safety Reporting - Aviation Safety Reports</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -34,10 +34,10 @@
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ user.email }}
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
                         </ul>
                     </li>
@@ -57,44 +57,192 @@
     <main class="container mt-4 flex-grow-1">
         <div class="row">
             <div class="col-12">
-                <div class="text-center mb-5">
-                    <h1 class="text-primary">About Aviation Safety Reporting</h1>
+                <div class="text-center mb-4">
+                    <h1 class="text-primary">Aviation Safety Reporting Initiave</h1>
                     <p class="lead">Building a safer aviation community through voluntary reporting</p>
                 </div>
 
-                <div class="card mb-4">
+        <!-- Introduction Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0 text-primary">Why Safety Reporting Matters</h3>
+            </div>
+            <div class="card-body">
+                <p class="lead">
+                    Aviation is safe greatly due to voluntary safety reporting! It is one of the most powerful tools for accident avoidance.
+                    Every report submitted contributes to a collective understanding of risks and helps prevent future incidents.
+                </p>
+            </div>
+        </div>
+
+        <!-- Principles Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0 text-primary">Safety Reporting Principles</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="fas fa-user-shield fa-2x"></i>
+                            </div>
+                            <h5 class="mt-3">Accountable</h5>
+                            <p class="small">Secure login required. All reports are traceable to promote responsible reporting and data integrity.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="fas fa-bullseye fa-2x"></i>
+                            </div>
+                            <h5 class="mt-3">Non-Punitive</h5>
+                            <p class="small">Focus on system improvement rather than blaming and individual fault-finding.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="fas fa-chart-line fa-2x"></i>
+                            </div>
+                            <h5 class="mt-3">Action-Oriented</h5>
+                            <p class="small">Reports trigger real investigations, driving improvements and preventive measures.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Benefits Section -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card h-100">
                     <div class="card-header">
-                        <h3 class="mb-0">Why Safety Reporting Matters</h3>
+                        <h4 class="mb-0 text-primary">Benefits of Reporting</h4>
                     </div>
                     <div class="card-body">
-                        <p>
-                            Voluntary safety reporting is one of the most powerful tools we have to enhance aviation safety.
-                            Every report submitted contributes to a collective understanding of risks and helps prevent future incidents.
-                        </p>
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <strong class="text-primary"><i class="fas fa-shield-alt"></i> Proactive Safety:</strong>
+                                <p class="mb-0">Identify and address potential hazards before they become accidents</p>
+                            </li>
+                            <li class="mb-3">
+                                <strong class="text-primary"><i class="fas fa-chart-bar"></i> Data-Driven Insights:</strong>
+                                <p class="mb-0">Collect valuable data to understand trends and patterns in aviation operations</p>
+                            </li>
+                            <li class="mb-3">
+                                <strong class="text-primary"><i class="fas fa-graduation-cap"></i> Learning Culture:</strong>
+                                <p class="mb-0">Foster an environment where everyone learns from shared experiences</p>
+                            </li>
+                            <li class="mb-0">
+                                <strong class="text-primary"><i class="fas fa-sync-alt"></i> Continuous Improvement:</strong>
+                                <p class="mb-0">Drive ongoing enhancements to procedures, training, and systems</p>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-
-                <div class="card mb-4">
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100">
                     <div class="card-header">
-                        <h3 class="mb-0">Our Mission</h3>
+                        <h4 class="mb-0 text-primary">What to Report</h4>
                     </div>
                     <div class="card-body">
-                        <p>
-                            We are committed to creating a platform where aviation professionals can share their experiences
-                            and observations in a safe, confidential environment. Together, we can identify emerging trends
-                            and prevent accidents before they happen.
-                        </p>
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <strong class="text-primary"><i class="fas fa-exclamation-triangle"></i> Near Misses:</strong>
+                                <p class="mb-0">Situations that could have resulted in an accident</p>
+                            </li>
+                            <li class="mb-3">
+                                <strong class="text-primary"><i class="fas fa-wrench"></i> Equipment Issues:</strong>
+                                <p class="mb-0">Malfunctions, failures, or unexpected equipment behavior</p>
+                            </li>
+                            <li class="mb-3">
+                                <strong class="text-primary"><i class="fas fa-clipboard-list"></i> Procedural Concerns:</strong>
+                                <p class="mb-0">Unclear procedures or process improvement opportunities</p>
+                            </li>
+                            <li class="mb-0">
+                                <strong class="text-primary"><i class="fas fa-cloud-rain"></i> Environmental Factors:</strong>
+                                <p class="mb-0">Weather, wildlife, or facility-related safety observations</p>
+                            </li>
+                        </ul>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <!-- Call to Action -->
-                <div class="alert alert-primary text-center mt-4">
-                    <h4>Ready to Contribute?</h4>
-                    <p class="mb-3">
-                        Your observations will help us build a safer aviation.
-                    </p>
-                    <a href="/create/" class="btn btn-primary btn-lg">Submit Your Safety Report</a>
+        <!-- Impact Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0 text-primary">The Impact of Your Reports</h3>
+            </div>
+            <div class="card-body">
+                <p class="mb-2">
+                    <strong>The Safety Pyramid: Every Fatality is Preceded by Warning Signs</strong>
+                </p>
+                <p class="mb-4">
+                    Aviation safety research shows a clear pattern: before one fatality occurs, there are typically
+                    <strong>10 serious incidents</strong>, <strong>30 minor incidents</strong>, <strong>600 near misses</strong>,
+                    and <strong>300,000 unsafe acts</strong>.
+                </p>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="d-flex flex-row align-items-end justify-content-center" style="height: 120px;">
+                            <div class="text-center me-2" style="width: 8%;">
+                                <div class="bg-dark text-white p-2 rounded" style="height: 120px; display: flex; flex-direction: column; justify-content: center;">
+                                    <h5 class="mb-1">1</h5>
+                                    <p class="small mb-0" style="font-size: 0.7rem;">Fatality</p>
+                                </div>
+                            </div>
+                            <div class="text-center me-2" style="width: 12%;">
+                                <div class="text-white p-2 rounded" style="background-color: #1a5490; height: 100px; display: flex; flex-direction: column; justify-content: center;">
+                                    <h5 class="mb-1">10</h5>
+                                    <p class="small mb-0" style="font-size: 0.7rem;">Serious</p>
+                                </div>
+                            </div>
+                            <div class="text-center me-2" style="width: 16%;">
+                                <div class="text-white p-2 rounded" style="background-color: #2E86AB; height: 80px; display: flex; flex-direction: column; justify-content: center;">
+                                    <h5 class="mb-1">30</h5>
+                                    <p class="small mb-0" style="font-size: 0.7rem;">Minor</p>
+                                </div>
+                            </div>
+                            <div class="text-center me-2" style="width: 24%;">
+                                <div class="text-white p-2 rounded" style="background-color: #5BA3C5; height: 60px; display: flex; flex-direction: column; justify-content: center;">
+                                    <h5 class="mb-1">600</h5>
+                                    <p class="small mb-0" style="font-size: 0.7rem;">Near Misses</p>
+                                </div>
+                            </div>
+                            <div class="text-center" style="width: 32%;">
+                                <div class="text-white p-2 rounded" style="background-color: #8DC1DF; height: 40px; display: flex; flex-direction: column; justify-content: center;">
+                                    <h5 class="mb-1">300,000</h5>
+                                    <p class="small mb-0" style="font-size: 0.7rem;">Unsafe Acts</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div class="alert alert-secondary mt-4 mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    <strong>Early Intervention:</strong> Safety reporting is the way to investigate early and prevent
+                    tragedies before they happen.
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="alert alert-primary text-center">
+            <h4 class="high-contrast">Ready to Contribute?</h4>
+            <p class="mb-3">
+                Your experience and observations are valuable. Help us build a safer aviation community
+                by sharing what you've learned.
+            </p>
+            {% if user.is_authenticated %}
+                <a href="{% url 'create_report' %}" class="btn btn-primary btn-lg">Submit Your Safety Report</a>
+            {% else %}
+                <a href="{% url 'account_signup' %}" class="btn btn-primary btn-lg me-2">Register to Report</a>
+                <a href="{% url 'account_login' %}" class="btn btn-outline-primary btn-lg">Login</a>
+            {% endif %}
+        </div>
             </div>
         </div>
     </main>

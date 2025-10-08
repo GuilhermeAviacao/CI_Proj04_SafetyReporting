@@ -216,6 +216,19 @@ Full documentation on [TESTING.md](TESTING.md)
 
 ---
 
+## Deployment
+
+### Cloudinary
+Cloudinary API is used to store media assets online, due to the fact that Heroku doesn't store images.
+https://cloudinary.com/
+
+### Heroku
+Heroku is the cloud development platform of choice.
+https://www.heroku.com/
+
+For documentation about deployment refer to https://devcenter.heroku.com/categories/deployment
+
+---
 ## Credits
 
 Code and troubleshooting assistance with Anthropic Claude (Sonnet 4.1 and 4.5 models).

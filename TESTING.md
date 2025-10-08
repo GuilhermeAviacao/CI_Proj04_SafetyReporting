@@ -1,5 +1,26 @@
 # Testing Results
 
+## Performance Tests
+
+Tested with Google Lighthouse
+
+Performance and Best Practices scores were not calculated, due to an error from Lighthouse on logging (error no_navstart)
+Accessibility: 94 / 100
+SEO: 90 / 100
+
+## Code Validation
+
+Passed code thru validators with successful (or minor comments by the checkers)
+### HTML 
+
+![HTML_Check.jpg](documentation/HTML_Check.jpg)
+
+### JavaScript
+![JSHint.jpg](documentation/JSHint.jpg)
+
+### Python Code Institute Linter
+![Python_linter.jpg](documentation/Python_linter.jpg)
+
 ## Automated Tests
 
 This project includes comprehensive automated tests for the reports app covering models, forms, and views.
@@ -77,7 +98,5 @@ This ensures fast test execution without affecting your production PostgreSQL da
 All 74 tests passing 
 
 ![All Tests Passing](documentation/Automatic%20Tests_Reports_All.jpg)
-
-
 
 

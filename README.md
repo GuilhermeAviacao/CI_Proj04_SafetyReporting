@@ -216,6 +216,12 @@ Full documentation on [TESTING.md](TESTING.md)
 
 ---
 
+## Known Issues
+
+Due to scope limitation, this project deliberately didn't add the option for a user to recover a forgotten password, as it would require some e-mail service to send it. 
+
+---
+
 ## Deployment
 
 ### Cloudinary

@@ -91,7 +91,7 @@ WSGI_APPLICATION = 'aviation_safety.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='***REMOVED***9'
+        default='DATABASE_URL'
     )
 }
 

@@ -224,15 +224,182 @@ Due to scope limitation, this project deliberately didn't add the option for a u
 
 ## Deployment
 
-### Cloudinary
-Cloudinary API is used to store media assets online, due to the fact that Heroku doesn't store images.
-https://cloudinary.com/
+This section covers the deployment process, including Cloudinary API setup, Heroku deployment, and local development options.
 
-### Heroku
-Heroku is the cloud development platform of choice.
-https://www.heroku.com/
+### Cloudinary API Setup
 
-For documentation about deployment refer to https://devcenter.heroku.com/categories/deployment
+This project uses the [Cloudinary API](https://cloudinary.com/) to store media assets online, as Heroku doesn't persist uploaded images and files.
+
+**Configuration Steps:**
+1. Create a free account at [Cloudinary](https://cloudinary.com/)
+2. Select **Programmable Media** for images and video API
+3. Optionally customize your cloud name
+4. Navigate to your Dashboard and copy the **API Environment Variable**
+5. Remove the `CLOUDINARY_URL=` prefix from the copied value - you only need the portion after the equals sign
+
+---
+
+### Heroku Deployment
+
+The application is deployed on [Heroku](https://www.heroku.com/), a cloud platform for hosting web applications.
+
+#### Initial Setup
+
+1. Log in to your Heroku account
+2. Click **New** in the top-right corner of the dashboard
+3. Select **Create new app**
+4. Enter a unique app name (e.g., `aviation-safety-reporting`)
+5. Choose your region (Europe or United States)
+6. Click **Create app**
+
+#### Environment Variables Configuration
+
+1. Navigate to the **Settings** tab of your Heroku app
+2. Click **Reveal Config Vars**
+3. Add the following environment variables:
+
+| Key | Value |
+|-----|-------|
+| `CLOUDINARY_URL` | Your Cloudinary API URL (without the `CLOUDINARY_URL=` prefix) |
+| `DATABASE_URL` | Automatically added by Heroku Postgres addon |
+| `SECRET_KEY` | Your Django secret key (generate a secure random string) |
+| `DISABLE_COLLECTSTATIC` | `1` (temporary, can be removed after first deployment) |
+
+**Note:** Never commit sensitive keys to your repository. Always use environment variables.
+
+#### Required Files
+
+Ensure your repository contains:
+- **requirements.txt**: Lists all Python dependencies
+- **Procfile**: Tells Heroku how to run your application
+  ```
+  web: gunicorn your_project_name.wsgi
+  ```
+
+#### Deployment Methods
+
+**Option 1: Automatic Deployment (Recommended)**
+1. Navigate to the **Deploy** tab in your Heroku app
+2. Select **GitHub** as the deployment method
+3. Connect to your GitHub repository
+4. Enable **Automatic Deploys** from your main branch
+5. Click **Deploy Branch** for the initial deployment
+
+**Option 2: Heroku CLI**
+1. Install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
+2. Open your terminal and navigate to your project directory
+3. Log in to Heroku:
+   ```bash
+   heroku login -i
+   ```
+4. Connect your local repository to the Heroku app:
+   ```bash
+   heroku git:remote -a your-app-name
+   ```
+5. Deploy your code:
+   ```bash
+   git push heroku main
+   ```
+
+For additional deployment documentation, refer to the [Heroku Dev Center](https://devcenter.heroku.com/categories/deployment).
+
+---
+
+### Local Deployment
+
+#### Prerequisites
+- Python 3.8 or higher
+- pip (Python package manager)
+- Git
+
+#### Installation Steps
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/GuilhermeAviacao/CI_Proj04_SafetyReporting.git
+   cd CI_Proj04_SafetyReporting
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   pip3 install -r requirements.txt
+   ```
+
+3. **Create environment file:**
+   Create a file named `env.py` at the root level of your project with the following content:
+   ```python
+   import os
+
+   os.environ['CLOUDINARY_URL'] = 'your_cloudinary_url_here'
+   os.environ['DATABASE_URL'] = 'your_database_url_here'
+   os.environ['SECRET_KEY'] = 'your_secret_key_here'
+   os.environ['DEBUG'] = 'True'  # Only for local development
+   ```
+
+   **Important:** Ensure `env.py` is listed in your `.gitignore` file to prevent committing sensitive data.
+
+4. **Run initial server test:**
+   ```bash
+   python3 manage.py runserver
+   ```
+   Stop the server with `CTRL+C`
+
+5. **Apply database migrations:**
+   ```bash
+   python3 manage.py makemigrations
+   python3 manage.py migrate
+   ```
+
+6. **Create superuser account:**
+   ```bash
+   python3 manage.py createsuperuser
+   ```
+   Follow the prompts to set up your admin account.
+
+7. **Load initial data (if applicable):**
+   ```bash
+   python3 manage.py loaddata fixtures_file_name
+   ```
+
+8. **Start the development server:**
+   ```bash
+   python3 manage.py runserver
+   ```
+
+   Access the application at `http://127.0.0.1:8000/`
+
+---
+
+### Forking the Repository
+
+Forking creates a personal copy of the repository in your GitHub account.
+
+1. Navigate to the [repository](https://github.com/GuilhermeAviacao/CI_Proj04_SafetyReporting)
+2. Click the **Fork** button in the top-right corner
+3. Select your GitHub account as the destination
+4. You now have a complete copy to experiment with
+
+---
+
+### Cloning the Repository
+
+Cloning downloads the repository to your local machine.
+
+**Using HTTPS:**
+```bash
+git clone https://github.com/GuilhermeAviacao/CI_Proj04_SafetyReporting.git
+```
+
+**Using SSH:**
+```bash
+git clone git@github.com:GuilhermeAviacao/CI_Proj04_SafetyReporting.git
+```
+
+**Using GitHub CLI:**
+```bash
+gh repo clone GuilhermeAviacao/CI_Proj04_SafetyReporting
+```
+
 
 ---
 ## Credits
@@ -242,3 +409,6 @@ Especially for the AJAX real-time drop-down page update solution. https://claude
 
 Read-me inspired by former Code Institute student - Adam Shaw. 
 https://github.com/adamshaw90/Trip-easy?tab=readme-ov-file
+
+## Acknowledgements
+I would like to thank the Code Institute team for the feedback that led to the final version of this project.

@@ -19,7 +19,7 @@ class UserProfileModelTest(TestCase):
         )
 
     def test_user_profile_creation(self):
-        """Test that UserProfile is created automatically when User is created"""
+        """Test UserProfile creation when User is created"""
         self.assertTrue(hasattr(self.user, 'profile'))
         self.assertIsInstance(self.user.profile, UserProfile)
 
@@ -90,7 +90,7 @@ class SafetyReportModelTest(TestCase):
 
     def test_safety_report_str(self):
         """Test the string representation of SafetyReport"""
-        expected = f"Safety Report - Test Airport on 2025-01-15"
+        expected = "Safety Report - Test Airport on 2025-01-15"
         self.assertEqual(str(self.report), expected)
 
     def test_default_investigation_status(self):

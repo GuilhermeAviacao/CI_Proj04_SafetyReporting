@@ -13,7 +13,11 @@ class UserProfile(models.Model):
         ('admin', 'Administrator'),
     ]
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='profile'
+    )
     role = models.CharField(
         max_length=20,
         choices=USER_ROLE_CHOICES,
@@ -55,12 +59,21 @@ class SafetyReport(models.Model):
         ('dismissed', 'Dismissed'),
     ]
 
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='safety_reports')
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='safety_reports'
+    )
     place = models.CharField(max_length=200)
     date = models.DateField()
     time = models.TimeField()
     description = models.TextField()
-    image = CloudinaryField('image', blank=True, null=True, help_text="Optional image attachment for the safety report")
+    image = CloudinaryField(
+        'image',
+        blank=True,
+        null=True,
+        help_text="Optional image attachment for the safety report"
+    )
     investigation_status = models.CharField(
         max_length=20,
         choices=INVESTIGATION_STATUS_CHOICES,
@@ -101,8 +114,16 @@ class SafetyReport(models.Model):
 
 
 class Comment(models.Model):
-    report = models.ForeignKey(SafetyReport, on_delete=models.CASCADE, related_name='comments')
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
+    report = models.ForeignKey(
+        SafetyReport,
+        on_delete=models.CASCADE,
+        related_name='comments'
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='comments'
+    )
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

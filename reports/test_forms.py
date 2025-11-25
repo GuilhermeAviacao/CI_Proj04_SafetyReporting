@@ -78,17 +78,26 @@ class SafetyReportFormTest(TestCase):
     def test_place_widget_has_correct_class(self):
         """Test that place widget has form-control class"""
         form = SafetyReportForm()
-        self.assertIn('form-control', form.fields['place'].widget.attrs['class'])
+        self.assertIn(
+            'form-control',
+            form.fields['place'].widget.attrs['class']
+        )
 
     def test_date_widget_has_form_control_class(self):
         """Test that date widget has form-control class"""
         form = SafetyReportForm()
-        self.assertIn('form-control', form.fields['date'].widget.attrs['class'])
+        self.assertIn(
+            'form-control',
+            form.fields['date'].widget.attrs['class']
+        )
 
     def test_time_widget_has_form_control_class(self):
         """Test that time widget has form-control class"""
         form = SafetyReportForm()
-        self.assertIn('form-control', form.fields['time'].widget.attrs['class'])
+        self.assertIn(
+            'form-control',
+            form.fields['time'].widget.attrs['class']
+        )
 
     def test_description_widget_has_correct_rows(self):
         """Test that description widget has correct number of rows"""
@@ -134,7 +143,10 @@ class CommentFormTest(TestCase):
     def test_content_widget_has_correct_class(self):
         """Test that content widget has form-control class"""
         form = CommentForm()
-        self.assertIn('form-control', form.fields['content'].widget.attrs['class'])
+        self.assertIn(
+            'form-control',
+            form.fields['content'].widget.attrs['class']
+        )
 
     def test_content_widget_has_correct_rows(self):
         """Test that content widget has correct number of rows"""

@@ -5,7 +5,8 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User
 from datetime import date, time
-from .models import SafetyReport, Comment, UserProfile
+from .models import (SafetyReport,
+                     Comment, UserProfile)
 
 
 class AboutViewTest(TestCase):
@@ -91,17 +92,23 @@ class ReportDetailViewTest(TestCase):
 
     def test_report_detail_view_status_code(self):
         """Test that report_detail view returns 200 status code"""
-        response = self.client.get(reverse('report_detail', args=[self.report.pk]))
+        response = self.client.get(
+            reverse('report_detail', args=[self.report.pk])
+        )
         self.assertEqual(response.status_code, 200)
 
     def test_report_detail_view_uses_correct_template(self):
         """Test that report_detail view uses correct template"""
-        response = self.client.get(reverse('report_detail', args=[self.report.pk]))
+        response = self.client.get(
+            reverse('report_detail', args=[self.report.pk])
+        )
         self.assertTemplateUsed(response, 'reports/report_detail.html')
 
     def test_report_detail_view_contains_report_data(self):
         """Test that report_detail view contains correct report data"""
-        response = self.client.get(reverse('report_detail', args=[self.report.pk]))
+        rresponse = self.client.get(
+            reverse('report_detail', args=[self.report.pk])
+        )
         self.assertEqual(response.context['report'], self.report)
 
     def test_report_detail_view_404_for_invalid_pk(self):
@@ -112,18 +119,22 @@ class ReportDetailViewTest(TestCase):
     def test_authenticated_user_sees_comment_form(self):
         """Test that authenticated users see the comment form"""
         self.client.login(username='testuser', password='testpass123')
-        response = self.client.get(reverse('report_detail', args=[self.report.pk]))
+        response = self.client.get(
+            reverse('report_detail', args=[self.report.pk])
+        )
         self.assertIsNotNone(response.context['comment_form'])
 
     def test_unauthenticated_user_no_comment_form(self):
         """Test that unauthenticated users don't see comment form"""
-        response = self.client.get(reverse('report_detail', args=[self.report.pk]))
+        response = self.client.get(
+            reverse('report_detail', args=[self.report.pk])
+        )
         self.assertIsNone(response.context['comment_form'])
 
     def test_post_comment_authenticated_user(self):
         """Test that authenticated users can post comments"""
         self.client.login(username='testuser', password='testpass123')
-        response = self.client.post(
+        self.client.post(
             reverse('report_detail', args=[self.report.pk]),
             {'content': 'Test comment'}
         )
@@ -163,7 +174,7 @@ class CreateReportViewTest(TestCase):
     def test_create_report_post_valid_data(self):
         """Test creating report with valid data"""
         self.client.login(username='testuser', password='testpass123')
-        response = self.client.post(reverse('create_report'), {
+        self.client.post(reverse('create_report'), {
             'place': 'Test Airport',
             'date': '2025-01-15',
             'time': '14:30',
@@ -309,19 +320,25 @@ class EditCommentViewTest(TestCase):
 
     def test_edit_comment_requires_login(self):
         """Test that edit comment requires authentication"""
-        response = self.client.get(reverse('edit_comment', args=[self.comment.pk]))
+        response = self.client.get(
+            reverse('edit_comment', args=[self.comment.pk])
+        )
         self.assertEqual(response.status_code, 302)  # Redirect to login
 
     def test_edit_comment_only_author_can_edit(self):
         """Test that only comment author can edit"""
         self.client.login(username='otheruser', password='testpass123')
-        response = self.client.get(reverse('edit_comment', args=[self.comment.pk]))
+        response = self.client.get(
+            reverse('edit_comment', args=[self.comment.pk])
+        )
         self.assertEqual(response.status_code, 404)
 
     def test_edit_comment_author_can_edit(self):
         """Test that comment author can edit"""
         self.client.login(username='testuser', password='testpass123')
-        response = self.client.get(reverse('edit_comment', args=[self.comment.pk]))
+        response = self.client.get(
+            reverse('edit_comment', args=[self.comment.pk])
+        )
         self.assertEqual(response.status_code, 200)
 
 
@@ -356,17 +373,23 @@ class DeleteCommentViewTest(TestCase):
 
     def test_delete_comment_requires_login(self):
         """Test that delete comment requires authentication"""
-        response = self.client.get(reverse('delete_comment', args=[self.comment.pk]))
+        response = self.client.get(
+            reverse('delete_comment', args=[self.comment.pk])
+        )
         self.assertEqual(response.status_code, 302)  # Redirect to login
 
     def test_delete_comment_only_author_can_delete(self):
         """Test that only comment author can delete"""
         self.client.login(username='otheruser', password='testpass123')
-        response = self.client.get(reverse('delete_comment', args=[self.comment.pk]))
+        response = self.client.get(
+            reverse('delete_comment', args=[self.comment.pk])
+        )
         self.assertEqual(response.status_code, 404)
 
     def test_delete_comment_author_can_delete(self):
         """Test that comment author can delete"""
         self.client.login(username='testuser', password='testpass123')
-        response = self.client.post(reverse('delete_comment', args=[self.comment.pk]))
+        self.client.post(
+            reverse('delete_comment', args=[self.comment.pk])
+        )
         self.assertEqual(Comment.objects.count(), 0)

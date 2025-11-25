@@ -6,7 +6,10 @@ from .models import SafetyReport, Comment, UserProfile
 
 @admin.register(SafetyReport)
 class SafetyReportAdmin(admin.ModelAdmin):
-    list_display = ['place', 'date', 'time', 'author', 'investigation_status', 'created_at']
+    list_display = [
+        'place', 'date', 'time', 'author', 'investigation_status',
+        'created_at'
+    ]
     list_filter = ['investigation_status', 'date', 'author', 'created_at']
     search_fields = ['place', 'description']
     date_hierarchy = 'date'
@@ -36,7 +39,9 @@ class CommentAdmin(admin.ModelAdmin):
     readonly_fields = ['created_at', 'updated_at']
 
     def content_preview(self, obj):
-        return obj.content[:50] + "..." if len(obj.content) > 50 else obj.content
+        if len(obj.content) > 50:
+            return obj.content[:50] + "..."
+        return obj.content
     content_preview.short_description = "Content Preview"
 
 
@@ -55,7 +60,9 @@ class UserAdmin(BaseUserAdmin):
     list_filter = BaseUserAdmin.list_filter + ('profile__role',)
 
     def get_role(self, obj):
-        return obj.profile.get_role_display() if hasattr(obj, 'profile') else 'No Profile'
+        if hasattr(obj, 'profile'):
+            return obj.profile.get_role_display()
+        return 'No Profile'
     get_role.short_description = 'Role'
 
 

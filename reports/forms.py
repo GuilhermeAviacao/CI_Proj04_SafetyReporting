@@ -22,7 +22,8 @@ class SafetyReportForm(forms.ModelForm):
             'description': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 8,
-                'placeholder': 'Provide detailed description of the safety incident or observation...'
+                'placeholder': ('Provide detailed description of the '
+                                'safety incident or observation...')
             }),
             'image': forms.FileInput(attrs={
                 'class': 'form-control',
@@ -47,7 +48,8 @@ class CommentForm(forms.ModelForm):
             'content': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 1,
-                'placeholder': 'Share your thoughts, insights, or questions about this safety report...'
+                'placeholder': ('Share your thoughts, insights, or '
+                                'questions about this safety report...')
             })
         }
 

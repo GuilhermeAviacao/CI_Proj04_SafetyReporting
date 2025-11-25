@@ -45,10 +45,16 @@ def report_detail(request, pk):
             comment.report = report
             comment.author = request.user
             comment.save()
-            messages.success(request, 'Your comment has been added successfully!')
+            messages.success(
+                request,
+                'Your comment has been added successfully!'
+            )
             return redirect('report_detail', pk=pk)
     else:
-        comment_form = CommentForm() if request.user.is_authenticated else None
+        if request.user.is_authenticated:
+            comment_form = CommentForm()
+        else:
+            comment_form = None
 
     context = {
         'report': report,
@@ -70,14 +76,23 @@ def create_report(request):
             report.author = request.user
             report.save()
             if is_new_user:
-                messages.success(request, 'Your first report was been created!')
+                messages.success(
+                    request,
+                    'Your first report was been created!'
+                )
             else:
-                messages.success(request, 'Safety report created successfully!')
+                messages.success(
+                    request,
+                    'Safety report created successfully!'
+                )
             return redirect('report_detail', pk=report.pk)
     else:
         form = SafetyReportForm()
         if is_new_user:
-            messages.info(request, 'Welcome aboard! Your registration was successful.')
+            messages.info(
+                request,
+                'Welcome aboard! Your registration was successful.'
+            )
 
     context = {
         'form': form,
@@ -99,7 +114,10 @@ def update_investigation_status(request, pk):
         new_status = request.POST.get('status')
 
         # Validate status choice
-        valid_statuses = [choice[0] for choice in SafetyReport.INVESTIGATION_STATUS_CHOICES]
+        valid_statuses = [
+            choice[0]
+            for choice in SafetyReport.INVESTIGATION_STATUS_CHOICES
+        ]
         if new_status not in valid_statuses:
             return JsonResponse({'error': 'Invalid status'}, status=400)
 
@@ -109,7 +127,8 @@ def update_investigation_status(request, pk):
 
         return JsonResponse({
             'success': True,
-            'message': f'Status updated from "{old_status}" to "{report.get_investigation_status_display()}"',
+            'message': (f'Status updated from "{old_status}" to '
+                        f'"{report.get_investigation_status_display()}"'),
             'new_status': report.get_investigation_status_display(),
             'status_color': report.get_status_color(),
             'status_icon': report.get_status_icon()
@@ -127,7 +146,10 @@ def edit_comment(request, pk):
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Your comment has been updated successfully!')
+            messages.success(
+                request,
+                'Your comment has been updated successfully!'
+            )
             return redirect('report_detail', pk=comment.report.pk)
     else:
         form = CommentForm(instance=comment)
@@ -146,7 +168,10 @@ def delete_comment(request, pk):
 
     if request.method == 'POST':
         comment.delete()
-        messages.success(request, 'Your comment has been deleted successfully!')
+        messages.success(
+            request,
+            'Your comment has been deleted successfully!'
+        )
         return redirect('report_detail', pk=report_pk)
 
     context = {
@@ -157,7 +182,9 @@ def delete_comment(request, pk):
 
 def investigations(request):
     # Get status statistics
-    status_stats = SafetyReport.objects.values('investigation_status').annotate(
+    status_stats = SafetyReport.objects.values(
+        'investigation_status'
+    ).annotate(
         count=Count('investigation_status')
     ).order_by('investigation_status')
 
@@ -191,7 +218,9 @@ def investigations(request):
 def get_investigation_data(request):
     """AJAX endpoint to fetch current investigation status data"""
     # Get status statistics
-    status_stats = SafetyReport.objects.values('investigation_status').annotate(
+    status_stats = SafetyReport.objects.values(
+        'investigation_status'
+    ).annotate(
         count=Count('investigation_status')
     ).order_by('investigation_status')
 

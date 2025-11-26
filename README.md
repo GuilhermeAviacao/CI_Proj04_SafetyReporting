@@ -414,7 +414,7 @@ https://github.com/adamshaw90/Trip-easy?tab=readme-ov-file
 
 ### Media
 
-Images sourced from [Pixabay](pixabay.com). 
+Images sourced from [Pixabay](pixabay.com).
 All are open source and free for use under the Pixabay [content license](https://pixabay.com/service/license-summary/).
 
 | Legend                      | Link                                                                          |

@@ -34,10 +34,10 @@ The central hub displaying all submitted safety reports in an organized, searcha
 **Key Features:**
 - **Card-Based Layout**: Each report displayed in a visually distinct card with key information
 - **Color-Coded Status Badges**:
-  - 🔵 Blue: Waiting investigation
-  - 🟡 Yellow: Under investigation
-  - ⚫ Grey: Investigation closed
-  - ⚫ Dark: Dismissed
+  - Blue: Waiting investigation
+  - Yellow: Under investigation
+  - Grey: Investigation closed
+  - Dark: Dismissed
 - **Search Functionality**: Real-time search to filter reports by location, description, or status
 - **Pagination**: Displays 6 reports per page for optimal viewing experience
 - **Quick Information**: Each card shows:
@@ -204,8 +204,8 @@ The database consists of four main entities:
 ---
 
 ## Agile Development Process
-- GitHub Projects & Issues
-
+- Link to [Git Hub Project Management](https://github.com/users/GuilhermeAviacao/projects/3)
+- Usage of GitHub Projects & Issues to store the User Stories and assign their progress in a Kanban style progress tracker. 
 ![User Stories](documentation/User_Stories.jpg)
 
 ---
@@ -401,6 +401,8 @@ gh repo clone GuilhermeAviacao/CI_Proj04_SafetyReporting
 ```
 
 
+
+
 ---
 ## Credits
 
@@ -409,6 +411,22 @@ Especially for the AJAX real-time drop-down page update solution. https://claude
 
 Read-me inspired by former Code Institute student - Adam Shaw. 
 https://github.com/adamshaw90/Trip-easy?tab=readme-ov-file
+
+### Media
+
+| Legend                      | Link                                                                          |
+|-----------------------------|-------------------------------------------------------------------------------|
+| Car in a runway             | https://pixabay.com/sv/photos/runway-flygf%C3%A4lt-flygplats-landning-1227526/|
+| Cockpit view of PAPI lights | https://pixabay.com/photos/cockpit-aircraft-runway-flying-4598188/            |
+| Airside Vehicle             | https://pixabay.com/photos/bird-watch-vehicle-schiphol-airport-9102           |
+| Runway Lights               | https://pixabay.com/photos/green-laser-light-rays-light-games-1757807/        |
+| Drone                       | https://pixabay.com/photos/aerial-aeroplane-aircraft-airplane-8334932/        |
+| Airport Tower               | https://pixabay.com/photos/airport-radar-airport-radar-tower-6599447/         |
+| Aircraft Accident           | https://pixabay.com/photos/plane-crash-accident-bad-landing-514783/           |
+| Helicopter Rescue           | https://pixabay.com/photos/pzl-w-3-sok%C3%B3%C5%82-czech-air-force-8274644/   |
+| Fighter Aircraft            | https://pixabay.com/photos/helicopter-agustawestland-aw189-7485942/           |
+| Aircraft Cabin              | https://pixabay.com/photos/aircraft-cabin-airplane-cabin-5535467/             |
+| Glider                      | https://pixabay.com/photos/glider-aviation-cabin-aircraft-613205/             |
 
 ## Acknowledgements
 I would like to thank the Code Institute team for the feedback that led to the final version of this project.

@@ -414,6 +414,9 @@ https://github.com/adamshaw90/Trip-easy?tab=readme-ov-file
 
 ### Media
 
+Images sourced from [Pixabay](pixabay.com). 
+All are open source and free for use under the Pixabay [content license](https://pixabay.com/service/license-summary/).
+
 | Legend                      | Link                                                                          |
 |-----------------------------|-------------------------------------------------------------------------------|
 | Car in a runway             | https://pixabay.com/sv/photos/runway-flygf%C3%A4lt-flygplats-landning-1227526/|

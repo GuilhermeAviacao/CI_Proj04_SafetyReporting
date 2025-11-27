@@ -34,10 +34,10 @@ The central hub displaying all submitted safety reports in an organized, searcha
 **Key Features:**
 - **Card-Based Layout**: Each report displayed in a visually distinct card with key information
 - **Color-Coded Status Badges**:
-  - Blue: Waiting investigation
-  - Yellow: Under investigation
-  - Grey: Investigation closed
-  - Dark: Dismissed
+  - Blue (#2E86AB): Waiting investigation
+  - Yellow (#FFC107): Under investigation
+  - Grey (#6C757D): Investigation closed
+  - Dark (#212529): Dismissed
 - **Search Functionality**: Real-time search to filter reports by location, description, or status
 - **Pagination**: Displays 6 reports per page for optimal viewing experience
 - **Quick Information**: Each card shows:

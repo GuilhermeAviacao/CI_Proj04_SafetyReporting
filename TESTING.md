@@ -13,13 +13,39 @@ SEO: 90 / 100
 Passed code thru validators with successful (or minor comments by the checkers)
 ### HTML 
 
-![HTML_Check.jpg](documentation/HTML_Check.jpg)
+| Page           | Image                                       |
+|----------------|---------------------------------------------|
+| About          |![HTML_Check.jpg](documentation/HTML_Check.jpg)            |
+| Board          | ![HTML_Check_Board.jpg](documentation/HTML_Check_Board.jpg)          |
+| Investigations | ![HTML_Check_Investigations.jpg](documentation/HTML_Check_Investigations.jpg) |
+| Create Report  | ![HTML_Check_Create.jpg](documentation/HTML_Check_Create.jpg)        |
 
 ### JavaScript
-![JSHint.jpg](documentation/JSHint.jpg)
 
-### Python Code Institute Linter
-![Python_linter.jpg](documentation/Python_linter.jpg)
+All functional, JSHint shows mostly version notes
+
+| Page               | Image                                                                         |
+|--------------------|-------------------------------------------------------------------------------|
+| Investigations | ![JSHint_Investigations.jpg](documentation/JSHint_Investigations.jpg) |
+| Create Report  | ![JSHint_reportdetails.jpg](documentation/JSHint_reportdetails.jpg)        |
+
+
+### Python Code Institute Linter (PEP8)
+
+All clear no errors found
+| Page                | Image                                                                         |
+|---------------------|-------------------------------------------------------------------------------|
+| Settings            | ![Linter_settings.jpg](documentation/Linter_settings.jpg)                     |
+| Reports Admin       | ![Linter_reports_admin.jpg](documentation/Linter_reports_admin.jpg)           |
+| Reports Forms       | ![Linter_reports_forms.jpg](documentation/Linter_reports_forms.jpg)           |
+| Reports Models      | ![Linter_reports_models.jpg](documentation/Linter_reports_models.jpg)         |
+| Reports Test Forms  | ![Linter_reports_testforms.jpg](documentation/Linter_reports_testforms.jpg)   |
+| Reports Test Models | ![Linter_reports_testmodels.jpg](documentation/Linter_reports_testmodels.jpg) |
+| Reports Test Views  | ![Linter_reports_testviews.jpg](documentation/Linter_reports_testviews.jpg)   |
+| Reports Urls        | ![Linter_reports_urls.jpg](documentation/Linter_reports_urls.jpg)             |
+| Reports Views       | ![Linter_reports_views.jpg](documentation/Linter_reports_views.jpg)           |
+| Reports Models      | ![Linter_reports_models.jpg](documentation/Linter_reports_models.jpg)         |
+
 
 ## Automated Tests
 
